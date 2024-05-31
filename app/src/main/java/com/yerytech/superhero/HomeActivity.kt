@@ -7,6 +7,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.tracing.perfetto.handshake.protocol.Response
 import com.yerytech.superhero.databinding.ActivityHomeBinding
 import kotlinx.coroutines.CoroutineScope
@@ -18,18 +19,19 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class HomeActivity : AppCompatActivity() {
 
-    private lateinit var binding:ActivityHomeBinding
-    private lateinit var retrofit:Retrofit
+    private lateinit var binding: ActivityHomeBinding
+    private lateinit var retrofit: Retrofit
+    private lateinit var adapter: SuperHeroAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=ActivityHomeBinding.inflate(layoutInflater)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        retrofit=getRetrofit()
-       initUI()
+        retrofit = getRetrofit()
+        initUI()
     }
 
     private fun initUI() {
-        binding.srcView.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
+        binding.srcView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
 
@@ -38,50 +40,55 @@ class HomeActivity : AppCompatActivity() {
             }
 
 
-
-            override fun onQueryTextChange(newText: String?)=false
-
+            override fun onQueryTextChange(newText: String?) = false
 
         })
+
+        adapter= SuperHeroAdapter()
+        binding.rvSuperHero.setHasFixedSize(true)
+        binding.rvSuperHero.layoutManager=LinearLayoutManager(this)
+        binding.rvSuperHero.adapter=adapter
     }
 
 
     @OptIn(UnstableApi::class)
     private fun searchByName(query: String) {
-      binding.circularProgress.isVisible=true
+        binding.circularProgress.isVisible = true
 
 
-    CoroutineScope(Dispatchers.IO).launch {
-        val myResponse: retrofit2.Response<SuperHeroResponse> =retrofit.create(ApiService::class.java).getSuperheroes(query)
-         if (myResponse.isSuccessful) {
-             val response: SuperHeroResponse? = myResponse.body()
+        CoroutineScope(Dispatchers.IO).launch {
+            val myResponse: retrofit2.Response<SuperHeroResponse> =
+                retrofit.create(ApiService::class.java).getSuperheroes(query)
+            if (myResponse.isSuccessful) {
+                val response: SuperHeroResponse? = myResponse.body()
 
 
-                 if (response!=null){
+                if (response != null) {
 
-                     Log.i("nmn",response.toString())
-                     runOnUiThread{
-                         binding.circularProgress.isVisible=false
-                     }
+                    runOnUiThread {
+                        adapter.updateList(response.superHero)
+                        binding.circularProgress.isVisible = false
+                    }
 
-                 }else{
-                     Log.i("mnm","no funciona")
+                } else {
+                    Log.i("mnm", "no funciona")
 
-                 }
+                }
 
 
-         }else{
-             Log.i("mnm","nada")
+            } else {
+                Log.i("mnm", "nada")
 
-         }
+            }
+        }
+
     }
 
-    }
-    private fun getRetrofit():Retrofit {
-        return  Retrofit.Builder()
-           .baseUrl("https://superheroapi.com/api/")
-           .addConverterFactory(GsonConverterFactory.create())
-           .build()
+    private fun getRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://superheroapi.com/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
 
     }
