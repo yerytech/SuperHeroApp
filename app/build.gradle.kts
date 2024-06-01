@@ -48,8 +48,13 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
+//    Retrofit
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+//    Picasso
+    implementation (libs.squareup.picasso)
+
     implementation(libs.androidx.media3.common)
     implementation(libs.androidx.tracing.perfetto.handshake)
 
@@ -57,7 +62,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-//    Retrofit
 
 
 }

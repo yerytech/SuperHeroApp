@@ -1,12 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent" >
- <TextView
-     android:id="@+id/tvsuperHeroName"
-     android:layout_width="wrap_content"
-     android:textSize="30sp"
-     android:layout_height="wrap_content"/>
+<androidx.cardview.widget.CardView
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    app:cardCornerRadius="25dp"
+    app:cardElevation="10dp"
+    tools:cardBackgroundColor="@color/teal_200"
+
+    >
 
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+
+            android:id="@+id/ivSuperHero"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image_view" />
+
+        <FrameLayout
+            android:background="@color/purple_200"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="bottom"
+            >
+
+            <TextView
+                android:id="@+id/tvSuperHeroName"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                tools:text="texto"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:textSize="20sp" />
+
+        </FrameLayout>
+
+
+    </FrameLayout>
+
+
+</androidx.cardview.widget.CardView>

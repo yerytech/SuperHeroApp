@@ -1,5 +1,6 @@
 package com.yerytech.superhero
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.tracing.perfetto.handshake.protocol.Response
+import com.yerytech.superhero.DetailSuperHeroActivity.Companion.HERO_ID
 import com.yerytech.superhero.databinding.ActivityHomeBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,7 +46,7 @@ class HomeActivity : AppCompatActivity() {
 
         })
 
-        adapter= SuperHeroAdapter()
+        adapter= SuperHeroAdapter(){id->  navigateToDetails(id)}
         binding.rvSuperHero.setHasFixedSize(true)
         binding.rvSuperHero.layoutManager=LinearLayoutManager(this)
         binding.rvSuperHero.adapter=adapter
@@ -92,6 +94,14 @@ class HomeActivity : AppCompatActivity() {
 
 
     }
+
+    private fun navigateToDetails(id:String){
+        val intent=Intent(this,DetailSuperHeroActivity::class.java)
+           intent.putExtra(HERO_ID,id)
+        startActivity(intent)
+    }
+
+
 
 
 }
